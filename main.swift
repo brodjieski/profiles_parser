@@ -121,13 +121,16 @@ func main() {
                 if valuesMatch {
                     value.forEach{
                         if let configkey = $0.keys.first, let configvalue = $0.values.first {
-                            print("\(configkey) : \(Colors.green)\(configvalue)\(Colors.reset)")    
+                            let configString = String(describing: configvalue).removeExtraSpaces()
+                
+                            print("\(configkey) : \(Colors.green)\(configString.prefix(60))\(Colors.reset)")    
                         }
                     }
                 } else {
                     value.forEach{
                         if let configkey = $0.keys.first, let configvalue = $0.values.first {
-                            print("\(configkey) : \(Colors.red)\(configvalue)\(Colors.reset)")    
+                            let configString = String(describing: configvalue).removeExtraSpaces()
+                            print("\(configkey) : \(Colors.red)\(configString.prefix(60))\(Colors.reset)")    
                         }
                     }
                 }
@@ -137,8 +140,8 @@ func main() {
 
     let infoBlob = """
     Output indicates that multiple configuration profiles are defining values for the duplicate keys.
-    This may result in unexpected behavior. For any keys (yellow) listed, the corresponding profile names,
-    along with the values are provided. The values in green are the same, while values in red are different
+    This may result in unexpected behavior. For any keys (\(Colors.yellow)yellow\(Colors.reset)) listed, the corresponding profile names,
+    along with the values are provided. The values in \(Colors.green)green\(Colors.reset) are the same, while values in \(Colors.red)red\(Colors.reset) are different
     and may need review. Values have been truncated for readability.
     NOTE: There are a number of keys that can be defined in multiple profiles with differing values.
     These are typically in application-specific profiles, or seen in networking profiles or PPPC profiles.
@@ -150,3 +153,14 @@ func main() {
 }
 
 main()
+
+extension String {
+
+    func removeExtraSpaces() -> String {
+        var newString = self.replacingOccurrences(of: "\n", with: " ")
+        newString = newString.replacingOccurrences(of: "[\\s\n]+", with: " ", options: .regularExpression, range: nil)
+        
+        return newString
+    }
+
+}
