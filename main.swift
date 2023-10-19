@@ -121,15 +121,35 @@ func main() {
                 if valuesMatch {
                     value.forEach{
                         if let configkey = $0.keys.first, let configvalue = $0.values.first {
-                            let configString = String(describing: configvalue).removeExtraSpaces()
-                
+                            
+                            var configString = String()
+                            if let valv = configvalue as? Bool {
+                                if valv {
+                                    configString = "True"
+                                } else {
+                                    configString = "False"
+                                }
+                            } else {
+                                configString = String(describing: configvalue).removeExtraSpaces()
+                            } 
                             print("\(configkey) : \(Colors.green)\(configString.prefix(60))\(Colors.reset)")    
                         }
                     }
                 } else {
                     value.forEach{
                         if let configkey = $0.keys.first, let configvalue = $0.values.first {
-                            let configString = String(describing: configvalue).removeExtraSpaces()
+                            var configString = String()
+                            if let valv = configvalue as? Bool {
+                                if valv {
+                                    configString = "True"
+                                } else {
+                                    configString = "False"
+                                }
+                            } else {
+                                configString = String(describing: configvalue).removeExtraSpaces()
+                            } 
+                            
+                            
                             print("\(configkey) : \(Colors.red)\(configString.prefix(60))\(Colors.reset)")    
                         }
                     }
